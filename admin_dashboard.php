@@ -79,7 +79,7 @@ if ($status === false) {
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="admin_dashboad.php">データ登録画面</a>
+                    <a class="navbar-brand" href="index.php">データ登録画面</a>
                 </div>
             </div>
         </nav>
