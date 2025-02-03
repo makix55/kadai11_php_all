@@ -33,7 +33,7 @@
                 <legend>以下の欄に入力し、送信ボタンを押してください</legend>
                 <div class="form-group">
                     <label for="name">学校名：</label><span class="required">
-                    <input type="text" class="form-control" id="name" name="name" placeholder="正式名称で入力(〇〇区立✖✖小学校)" required>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="正式名称で入力(〇〇区立✖✖小学校)" required>
                 </div>
                 <div class=" form-group">
                     <label for="code">郵便番号：</label>
@@ -82,6 +82,7 @@
                     <textarea id="content" name="content" class="form-control" rows="4" cols="40"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">送信</button>
+
             </fieldset>
         </div>
     </form>

@@ -10,7 +10,10 @@ $fax = $_POST['fax'];
 $teacher = $_POST['teacher'];
 $schedule = isset($_POST['schedule']) ? implode(',', $_POST['schedule']) : ''; // 配列をカンマ区切りの文字列に変換
 $soroteacher = $_POST['soroteacher'];
-$content = $_POST['content'];
+$content = isset($_POST['content']) ? $_POST['content'] : '特になし';  // 空の場合、デフォルト値を設定
+$category = isset($_POST['category']) ? $_POST['category'] : '未設定';
+$teacher_name = isset($_POST['teacher_name']) ? $_POST['teacher_name'] : '未設定';
+$teacher_contact= isset($_POST['teacher_contact']) ? $_POST['teacher_contact'] : '未設定';
 
 // 2. DB接続
 require_once('funcs.php');
@@ -19,9 +22,9 @@ $pdo = db_conn();
 // 3. データ登録SQL作成
 $stmt = $pdo->prepare(
   'INSERT INTO gs_bm_table (
-        name, code, address, station, email, tel, fax, teacher, schedule, soroteacher, content, date
+        name, code, address, station, email, tel, fax, teacher, schedule, soroteacher, content, category, teacher_name,  teacher_contact, date
     ) VALUES (
-        :name, :code, :address, :station, :email, :tel, :fax, :teacher, :schedule, :soroteacher, :content, now()
+        :name, :code, :address, :station, :email, :tel, :fax, :teacher, :schedule, :soroteacher, :content, :category, :teacher_name,  :teacher_contact, now()
     )'
 );
 
@@ -37,23 +40,27 @@ $stmt->bindValue(':teacher', $teacher, PDO::PARAM_STR);
 $stmt->bindValue(':schedule', $schedule, PDO::PARAM_STR);
 $stmt->bindValue(':soroteacher', $soroteacher, PDO::PARAM_STR);
 $stmt->bindValue(':content', $content, PDO::PARAM_STR);
+$stmt->bindValue(':category', $teacher_name, PDO::PARAM_STR);
+$stmt->bindValue(':teacher_name', $teacher_name, PDO::PARAM_STR);
+$stmt->bindValue(':teacher_contact', $teacher_name, PDO::PARAM_STR);
 
 // 実行
 $status = $stmt->execute();
 
-// 4. データ登録処理後
+// SQL実行後にエラーが発生した場合、エラー内容を表示
 if ($status === false) {
-  // SQL実行時にエラーがある場合（エラーオブジェクト取得して表示）
-  $error = $stmt->errorInfo();
-  exit('ErrorMessage:' . $error[2]);
-} else {
-  // 挿入したデータのID（受付No.）と受付日時を取得
-  $id = $pdo->lastInsertId();
-  $stmt = $pdo->prepare("SELECT date FROM gs_bm_table WHERE id = :id");
-  $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-  $stmt->execute();
-  $date = $stmt->fetchColumn();
+   $error = $stmt->errorInfo();
+   exit('Error: ' . print_r($error, true));
 }
+
+// 4. データ登録処理後
+$id = $pdo->lastInsertId();  // 挿入したデータのID（受付No.）を取得
+$stmt = $pdo->prepare("SELECT date FROM gs_bm_table WHERE id = :id");
+$stmt->bindValue(':id', $id, PDO::PARAM_INT);
+$stmt->execute();
+$date = $stmt->fetchColumn();
+
+
 ?>
 
 <!DOCTYPE html>
