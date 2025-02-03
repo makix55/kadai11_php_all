@@ -16,7 +16,7 @@
 
 ## ④作ったアプリケーション用のIDまたはPasswordがある場合
 
-- 管理者ID：kanri  PW：kanri
+- 管理者ID：admin  PW：admin
 - 閲覧者ID：viewer PW：viewer
 
   講師派遣 結果照会 
